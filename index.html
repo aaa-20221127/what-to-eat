@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>今天吃什么</title>
+<title>香香公主的专属菜单</title>
 <style>
   :root {
     --bg: #f7f0e3;
@@ -82,21 +82,12 @@
   .chip i { width: 10px; height: 10px; border-radius: 50%; background: var(--c); }
   .chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
   .chip:disabled { opacity: .55; }
-  .skip {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    min-height: 44px;
-    margin-top: 8px;
-    font-size: 15px;
-  }
-  .skip input { width: 20px; height: 20px; margin: 0; accent-color: var(--accent); }
   :focus-visible { outline: 3px solid #2b7a99; outline-offset: 2px; }
 </style>
 </head>
 <body>
 <main>
-  <h1>今天吃什么</h1>
+  <h1>香香公主的专属菜单</h1>
   <p class="count" id="count"></p>
 
   <div class="wheel-wrap">
@@ -112,26 +103,21 @@
   <button id="spin" type="button">开始转</button>
 
   <div class="chips" id="chips"></div>
-  <label class="skip">
-    <input type="checkbox" id="skipSpicy">
-    <span>跳过辛辣、刺激和生蒜多的菜（溃疡期）</span>
-  </label>
 </main>
 
 <script>
 const CATEGORIES = [
   { name: "已会", color: "#2f6b4f", dishes: ["香菜炒牛肉", "芹菜炒牛肉", "蒜苔炒肉", "蒜香大虾", "鸡蛋", "炒娃娃菜"] },
-  { name: "快炒", color: "#c8391f", dishes: ["青椒肉丝", "西兰花炒虾仁", "手撕包菜", "番茄炒蛋", "黑椒牛柳*"] },
-  { name: "蒸", color: "#22708f", dishes: ["蒸蛋", "清蒸鲈鱼", "蒜蓉粉丝虾*", "豉汁蒸排骨", "香菇蒸鸡", "肉饼蒸蛋", "蒜泥蒸茄子*"] },
+  { name: "快炒", color: "#c8391f", dishes: ["青椒肉丝", "西兰花炒虾仁", "手撕包菜", "番茄炒蛋", "黑椒牛柳"] },
+  { name: "蒸", color: "#22708f", dishes: ["蒸蛋", "清蒸鲈鱼", "蒜蓉粉丝虾", "豉汁蒸排骨", "香菇蒸鸡", "肉饼蒸蛋", "蒜泥蒸茄子"] },
   { name: "压力炖", color: "#7f4527", dishes: ["番茄牛腩", "红烧肉", "萝卜炖牛腩", "卤牛腱", "排骨玉米汤", "咖喱鸡腿"] },
   { name: "煎和收汁", color: "#a8620b", dishes: ["香煎鸡腿", "照烧鸡腿", "香煎鸡胸", "香煎鱼排", "煎牛排", "家常豆腐"] },
-  { name: "碗汁和勾芡", color: "#743a74", dishes: ["鱼香肉丝*", "醋溜娃娃菜", "宫保鸡丁*", "麻婆豆腐*", "蚝油生菜"] },
-  { name: "蔬菜和汤", color: "#55721f", dishes: ["酸辣土豆丝*", "拍黄瓜", "番茄蛋花汤"] },
+  { name: "碗汁和勾芡", color: "#743a74", dishes: ["鱼香肉丝", "醋溜娃娃菜", "宫保鸡丁", "麻婆豆腐", "蚝油生菜"] },
+  { name: "蔬菜和汤", color: "#55721f", dishes: ["酸辣土豆丝", "拍黄瓜", "番茄蛋花汤"] },
 ];
 
 const ALL_DISHES = CATEGORIES.flatMap(c => c.dishes.map(d => ({
-  name: d.replace("*", ""),
-  spicy: d.endsWith("*"),
+  name: d,
   category: c.name,
   color: c.color,
 })));
@@ -144,28 +130,25 @@ const subEl = document.getElementById("sub");
 const countEl = document.getElementById("count");
 const spinBtn = document.getElementById("spin");
 const chipsEl = document.getElementById("chips");
-const skipEl = document.getElementById("skipSpicy");
 
-const state = { category: "全部", skipSpicy: false, rot: 0, spinning: false, size: 0 };
+const state = { category: "全部", rot: 0, spinning: false, size: 0 };
 let current = [];
 
 function loadPrefs() {
   try {
     const saved = JSON.parse(localStorage.getItem("what-to-eat") || "{}");
     if (saved.category === "全部" || CATEGORIES.some(c => c.name === saved.category)) state.category = saved.category;
-    state.skipSpicy = saved.skipSpicy === true;
   } catch (e) {}
 }
 
 function savePrefs() {
   try {
-    localStorage.setItem("what-to-eat", JSON.stringify({ category: state.category, skipSpicy: state.skipSpicy }));
+    localStorage.setItem("what-to-eat", JSON.stringify({ category: state.category }));
   } catch (e) {}
 }
 
 function filterDishes() {
-  current = ALL_DISHES.filter(d =>
-    (state.category === "全部" || d.category === state.category) && !(state.skipSpicy && d.spicy));
+  current = ALL_DISHES.filter(d => state.category === "全部" || d.category === state.category);
   countEl.textContent = "当前 " + current.length + " 道菜";
 }
 
@@ -237,14 +220,13 @@ function resize() {
 function setBusy(busy) {
   state.spinning = busy;
   spinBtn.disabled = busy;
-  skipEl.disabled = busy;
   chipsEl.querySelectorAll("button").forEach(b => { b.disabled = busy; });
   spinBtn.textContent = busy ? "转动中" : "再转一次";
 }
 
 function showResult(dish) {
   nameEl.textContent = dish.name;
-  subEl.textContent = dish.category + (dish.spicy ? " · 溃疡没好先换一道" : "");
+  subEl.textContent = dish.category;
 }
 
 function resetResult() {
@@ -309,11 +291,6 @@ function applyFilter() {
 }
 
 loadPrefs();
-skipEl.checked = state.skipSpicy;
-skipEl.addEventListener("change", () => {
-  state.skipSpicy = skipEl.checked;
-  applyFilter();
-});
 spinBtn.addEventListener("click", spin);
 filterDishes();
 renderChips();
