@@ -1,0 +1,14 @@
+name = "xiangxiang-order-notifications"
+main = "worker.mjs"
+compatibility_date = "2026-11-21"
+
+[vars]
+MENU_ORIGIN = "https://aaa-20221127.github.io"
+
+[[ratelimits]]
+name = "ORDER_RATE_LIMIT"
+namespace_id = "20748"
+
+[ratelimits.simple]
+limit = 3
+period = 60

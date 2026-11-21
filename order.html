@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>点菜 · 香香公主的专属菜单</title>
+<link rel="stylesheet" href="./order.css">
+<script defer src="./catalog.js"></script>
+<script defer src="./order-notification-config.js"></script>
+<script defer src="./order.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="back-link" href="./index.html">← <span>回转盘</span></a>
+      <span class="header-title">香香公主的专属菜单</span>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="hero" aria-labelledby="page-title">
+      <div class="hero-content">
+        <h1 id="page-title">今天想吃什么？</h1>
+        <a class="hero-link" href="#menu">开始点菜 <span aria-hidden="true">↓</span></a>
+      </div>
+    </section>
+
+    <section class="menu" id="menu" aria-labelledby="menu-title">
+      <div class="menu-head">
+        <div>
+          <h2 id="menu-title">点菜菜单</h2>
+          <p id="menu-count" role="status"></p>
+        </div>
+        <label class="search">
+          <span class="search-icon" aria-hidden="true"></span>
+          <input id="dish-search" type="search" placeholder="搜索菜名" aria-label="搜索菜名" maxlength="60">
+        </label>
+      </div>
+      <div class="menu-layout">
+        <nav class="categories" id="order-categories" aria-label="菜品分类"></nav>
+        <div class="dish-grid" id="dish-grid"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="cart-bar">
+    <div class="shell cart-bar-inner">
+      <button class="cart-toggle" id="cart-toggle" type="button" aria-haspopup="dialog">
+        <span class="cart-icon" aria-hidden="true"><i></i></span>
+        <span><strong>已选菜品</strong><small id="cart-count" aria-live="polite">还未选菜</small></span>
+      </button>
+      <button class="primary" id="checkout" type="button" disabled>下单</button>
+    </div>
+  </footer>
+
+  <dialog class="sheet" id="cart-sheet" aria-labelledby="cart-title">
+    <div class="sheet-head">
+      <h2 id="cart-title">已选菜品</h2>
+      <button class="close" type="button" data-close aria-label="关闭">×</button>
+    </div>
+    <div class="sheet-body" id="cart-lines"></div>
+    <p class="order-status" id="order-status" role="status" hidden></p>
+    <div class="sheet-foot">
+      <span id="cart-summary"></span>
+      <button class="primary" id="confirm-order" type="button">确认下单</button>
+    </div>
+  </dialog>
+
+  <dialog class="sheet receipt" id="receipt" aria-labelledby="receipt-title">
+    <div class="sheet-head">
+      <h2 id="receipt-title">订单结果</h2>
+      <button class="close" type="button" data-close aria-label="关闭">×</button>
+    </div>
+    <div class="sheet-body">
+      <p class="receipt-meta" id="receipt-meta"></p>
+      <ul class="receipt-lines" id="receipt-lines"></ul>
+      <p class="receipt-note" id="receipt-note"></p>
+    </div>
+    <div class="sheet-foot">
+      <button class="primary" type="button" data-close>完成</button>
+    </div>
+  </dialog>
+
+</body>
+</html>
