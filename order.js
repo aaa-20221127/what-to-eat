@@ -115,17 +115,42 @@ function renderCardQuantity(name) {
   item.controls.replaceChildren(add);
 }
 
+function makeRecipe(dish) {
+  const slug = DISH_PHOTOS.get(dish.name);
+  const details = document.createElement("details");
+  details.className = "dish-recipe";
+
+  const summary = document.createElement("summary");
+  summary.textContent = "制作步骤";
+  summary.setAttribute("aria-label", dish.name + "的制作步骤");
+  const steps = document.createElement("ol");
+  for (const step of RECIPE_STEPS[slug]) {
+    const item = document.createElement("li");
+    item.textContent = step;
+    steps.append(item);
+  }
+
+  const source = document.createElement("a");
+  source.href = RECIPE_SOURCES[slug];
+  source.target = "_blank";
+  source.rel = "noopener noreferrer";
+  source.textContent = "查看参考菜谱 ↗";
+  details.append(summary, steps, source);
+  return details;
+}
+
 function makeDishCard(dish) {
   const card = document.createElement("article");
   card.className = "dish";
   const info = document.createElement("div");
   info.className = "dish-info";
   const heading = document.createElement("div");
+  heading.className = "dish-heading";
   const title = document.createElement("h3");
   title.textContent = dish.name;
   const tags = document.createElement("p");
   tags.textContent = dish.categories.join(" · ");
-  heading.append(title, tags);
+  heading.append(title, tags, makeRecipe(dish));
   const controls = document.createElement("div");
   controls.className = "dish-controls";
   info.append(heading, controls);

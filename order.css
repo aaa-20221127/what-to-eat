@@ -119,7 +119,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 }
 .category:hover { background: var(--paper); }
 .category[aria-pressed="true"] { background: var(--wash); color: var(--red-dark); box-shadow: inset 3px 0 var(--red); }
-.dish-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.dish-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 12px; }
 .dish {
   display: grid;
   grid-template-columns: 125px minmax(0, 1fr);
@@ -133,8 +133,16 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .dish.is-selected { border-color: #c78373; }
 .dish img { width: 100%; aspect-ratio: 1; height: auto; align-self: center; object-fit: cover; background: var(--wash); border-radius: 11px; }
 .dish-info { display: flex; flex-direction: column; justify-content: space-between; align-items: start; min-width: 0; padding: 4px 2px 0 0; }
+.dish-heading { width: 100%; min-width: 0; }
 .dish h3 { margin: 0 0 5px; font-size: 17px; line-height: 1.28; overflow-wrap: anywhere; }
 .dish p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.4; }
+.dish:has(.dish-recipe[open]) img { align-self: start; }
+.dish-recipe { margin: 3px 0; color: var(--ink); font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; }
+.dish-recipe summary { width: fit-content; padding: 4px 2px; color: var(--red-dark); cursor: pointer; font-weight: 700; }
+.dish-recipe[open] { padding-bottom: 8px; }
+.dish-recipe ol { margin: 3px 0 6px; padding-left: 19px; }
+.dish-recipe li + li { margin-top: 4px; }
+.dish-recipe a { color: var(--red-dark); text-underline-offset: 3px; }
 .dish-controls { align-self: end; display: inline-flex; align-items: center; min-height: 42px; }
 .add, .stepper button {
   min-width: 42px;
