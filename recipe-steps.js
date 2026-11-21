@@ -41,6 +41,12 @@ const RECIPE_STEPS = {
   "hot-sour-potatoes": ["土豆切细丝，用清水洗掉表面淀粉并沥干。", "热油炒香干辣椒，下土豆丝快炒至脆嫩熟透。", "加盐和少量醋快速翻匀出锅。"],
   "smashed-cucumber": ["黄瓜洗净后用刀面拍裂，切成一口大小。", "将蒜末、生抽、醋和香油拌成汁。", "临吃前和黄瓜拌匀，口味偏重可略加盐。"],
   "tomato-egg-drop-soup": ["番茄切小块，鸡蛋打散。番茄用少许油炒到出汁。", "加水煮开，加入一点盐，再转微沸。", "把蛋液细细淋入汤中，等蛋花凝固后轻推一下，撒葱。"],
+  "yam-shiitake-chicken-soup": ["鸡肉切块，山药去皮切厚段，香菇去蒂切半，备两片姜。", "鸡块和姜加水煮开，撇去浮沫，小火炖约 30 分钟。", "加山药和香菇再炖约 15–20 分钟，至山药软、鸡肉中心达 74°C，最后加盐。"],
+  "carrot-corn-chicken-soup": ["鸡肉切块，胡萝卜切滚刀块，甜玉米切段。", "鸡块加姜片和清水煮开后撇沫，转小火，加玉米炖约 30 分钟。", "加入胡萝卜再炖约 15–20 分钟，至胡萝卜软、鸡肉中心达 74°C，再加盐。"],
+  "winter-melon-job-tears-rib-soup": ["薏米洗净，按包装说明浸泡。排骨焯水去沫，冬瓜去瓤切厚块。", "排骨、薏米和姜片加水，小火炖约 45–60 分钟，直到薏米和排骨软熟。", "加入冬瓜继续煮约 10–15 分钟，瓜肉透亮后加盐。"],
+  "loofah-clam-tofu-soup": ["蛤蜊吐沙后刷净外壳，丝瓜去皮切块，豆腐切丁。", "少油略炒丝瓜和姜丝，加水煮开，放豆腐煮几分钟。", "下蛤蜊煮至开壳、蛤肉熟透，丢弃煮后不开壳的蛤蜊。尝味后再决定是否加盐。"],
+  "lotus-peanut-rib-soup": ["花生提前浸泡至吸水，莲藕去皮切厚片，排骨焯水撇沫。", "排骨、花生、莲藕和姜片一起加清水煮开，转小火炖约 60–90 分钟。", "莲藕和花生软熟、排骨能轻松咬开时，加盐出锅。"],
+  "daikon-lamb-soup": ["羊肉切块焯水去沫，白萝卜去皮切块，备姜片。", "羊肉、姜片加清水，小火炖约 60–90 分钟，至羊肉软嫩。", "下白萝卜炖约 15–25 分钟，至萝卜透亮软熟。加盐，按口味撒香菜或白胡椒。"],
 };
 
 const RECIPE_SOURCES = {
@@ -86,4 +92,10 @@ const RECIPE_SOURCES = {
   "hot-sour-potatoes": "https://m.xiachufang.com/recipe/101868926/",
   "smashed-cucumber": "https://home.meishichina.com/recipe-89413.html",
   "tomato-egg-drop-soup": "https://home.meishichina.com/recipe-149887.html",
+  "yam-shiitake-chicken-soup": "https://m.xiachufang.com/recipe/102249376/",
+  "carrot-corn-chicken-soup": "https://www.xiachufang.com/recipe/104345030/",
+  "winter-melon-job-tears-rib-soup": "https://www.xiachufang.com/recipe/106432394/",
+  "loofah-clam-tofu-soup": "https://m.xiachufang.com/recipe/106174398/",
+  "lotus-peanut-rib-soup": "https://www.xiachufang.com/recipe/99820/",
+  "daikon-lamb-soup": "https://m.xiachufang.com/recipe/106669363/",
 };

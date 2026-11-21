@@ -145,7 +145,10 @@ const COOKING_CATEGORIES = [
     "香菜炒牛肉", "芹菜炒牛肉", "蒜苔炒肉", "蒜香大虾", "鸡蛋", "炒娃娃菜", "辣椒炒肉", "青椒肉丝",
     "西兰花炒虾仁", "手撕包菜", "番茄炒蛋", "黑椒牛柳", "鱼香肉丝", "醋溜娃娃菜", "宫保鸡丁", "酸辣土豆丝",
   ] },
-  { name: "养生汤类", color: "#55721f", dishes: ["排骨萝卜汤", "排骨玉米汤", "番茄蛋花汤"] },
+  { name: "养生汤类", color: "#55721f", dishes: [
+    "排骨萝卜汤", "排骨玉米汤", "番茄蛋花汤", "山药香菇鸡汤", "胡萝卜玉米鸡汤",
+    "冬瓜薏米排骨汤", "丝瓜蛤蜊豆腐汤", "莲藕花生排骨汤", "萝卜羊肉汤",
+  ] },
   { name: "炖煮与红烧", color: "#7f4527", dishes: [
     "番茄牛腩", "红烧肉", "萝卜炖牛腩", "咖喱鸡腿", "家常豆腐", "麻婆豆腐",
   ] },
@@ -156,8 +159,14 @@ const COOKING_CATEGORIES = [
 ];
 
 const SEAFOOD = new Set([
-  "蒜香大虾", "西兰花炒虾仁", "清蒸鲈鱼", "蒜蓉粉丝虾", "清蒸螃蟹", "清蒸生蚝蒜蓉", "香煎鱼排",
+  "蒜香大虾", "西兰花炒虾仁", "清蒸鲈鱼", "蒜蓉粉丝虾", "清蒸螃蟹", "清蒸生蚝蒜蓉", "香煎鱼排", "丝瓜蛤蜊豆腐汤",
 ]);
+
+const SEASONAL_SOUPS = [
+  { name: "春季汤", color: "#47766d", dishes: ["山药香菇鸡汤", "胡萝卜玉米鸡汤"] },
+  { name: "夏季汤", color: "#39747d", dishes: ["冬瓜薏米排骨汤", "丝瓜蛤蜊豆腐汤"] },
+  { name: "冬季汤", color: "#88502e", dishes: ["莲藕花生排骨汤", "萝卜羊肉汤"] },
+];
 
 const KNOWN_DISHES = new Set([
   "香菜炒牛肉", "芹菜炒牛肉", "蒜苔炒肉", "蒜香大虾", "鸡蛋", "炒娃娃菜", "辣椒炒肉",
@@ -170,6 +179,7 @@ const FILTERS = [
   ...COOKING_CATEGORIES.slice(0, 3),
   { name: "海鲜", color: "#286499" },
   ...COOKING_CATEGORIES.slice(3),
+  ...SEASONAL_SOUPS,
 ];
 
 const ALL_DISHES = COOKING_CATEGORIES.flatMap(({name, color, dishes}) =>
@@ -177,6 +187,8 @@ const ALL_DISHES = COOKING_CATEGORIES.flatMap(({name, color, dishes}) =>
     const categories = [name];
     if (SEAFOOD.has(dish)) categories.push("海鲜");
     if (KNOWN_DISHES.has(dish)) categories.push("已会");
+    const season = SEASONAL_SOUPS.find(filter => filter.dishes.includes(dish));
+    if (season) categories.push(season.name);
     return { name: dish, categories, color };
   })
 );
@@ -224,6 +236,12 @@ const DISH_PHOTOS = new Map([
   ["酸辣土豆丝", "hot-sour-potatoes"],
   ["拍黄瓜", "smashed-cucumber"],
   ["番茄蛋花汤", "tomato-egg-drop-soup"],
+  ["山药香菇鸡汤", "yam-shiitake-chicken-soup"],
+  ["胡萝卜玉米鸡汤", "carrot-corn-chicken-soup"],
+  ["冬瓜薏米排骨汤", "winter-melon-job-tears-rib-soup"],
+  ["丝瓜蛤蜊豆腐汤", "loofah-clam-tofu-soup"],
+  ["莲藕花生排骨汤", "lotus-peanut-rib-soup"],
+  ["萝卜羊肉汤", "daikon-lamb-soup"],
 ]);
 
 const TAU = Math.PI * 2;
