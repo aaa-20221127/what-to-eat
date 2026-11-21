@@ -51,6 +51,16 @@
   }
   .result .name { font-size: 28px; font-weight: 700; line-height: 1.3; }
   .result .sub { margin-top: 2px; color: var(--muted); font-size: 14px; line-height: 1.5; }
+  .result .photo {
+    display: block;
+    width: 100%;
+    max-width: 240px;
+    aspect-ratio: 1;
+    margin: 10px auto 0;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+  .result .photo[hidden] { display: none; }
   #spin {
     width: 100%;
     height: 54px;
@@ -98,6 +108,7 @@
   <div class="result" aria-live="polite">
     <div class="name" id="name">转一下</div>
     <div class="sub" id="sub">转到什么，今天就做什么</div>
+    <img class="photo" id="dish-photo" alt="" decoding="async" hidden>
   </div>
 
   <button id="spin" type="button">开始转</button>
@@ -122,11 +133,25 @@ const ALL_DISHES = CATEGORIES.flatMap(c => c.dishes.map(d => ({
   color: c.color,
 })));
 
+const DISH_PHOTOS = new Map([
+  ["香菜炒牛肉", "cilantro-beef"],
+  ["芹菜炒牛肉", "celery-beef"],
+  ["蒜苔炒肉", "garlic-scapes-pork"],
+  ["蒜香大虾", "garlic-prawns"],
+  ["鸡蛋", "eggs"],
+  ["炒娃娃菜", "baby-napa"],
+  ["辣椒炒肉", "chili-pork"],
+  ["清蒸螃蟹", "steamed-crab"],
+  ["清蒸生蚝蒜蓉", "garlic-oysters"],
+  ["排骨萝卜汤", "pork-rib-daikon-soup"],
+]);
+
 const TAU = Math.PI * 2;
 const canvas = document.getElementById("wheel");
 const ctx = canvas.getContext("2d");
 const nameEl = document.getElementById("name");
 const subEl = document.getElementById("sub");
+const photoEl = document.getElementById("dish-photo");
 const countEl = document.getElementById("count");
 const spinBtn = document.getElementById("spin");
 const chipsEl = document.getElementById("chips");
@@ -227,9 +252,17 @@ function setBusy(busy) {
 function showResult(dish) {
   nameEl.textContent = dish.name;
   subEl.textContent = dish.category;
+  const photo = DISH_PHOTOS.get(dish.name);
+  if (photo) photoEl.src = "./photos/" + photo + ".webp";
+}
+
+function hidePhoto() {
+  photoEl.hidden = true;
+  photoEl.removeAttribute("src");
 }
 
 function resetResult() {
+  hidePhoto();
   nameEl.textContent = "转一下";
   subEl.textContent = "转到什么，今天就做什么";
   spinBtn.textContent = "开始转";
@@ -249,6 +282,7 @@ function spin() {
   const t0 = performance.now();
 
   setBusy(true);
+  hidePhoto();
   nameEl.textContent = "……";
   subEl.textContent = "看看今天吃什么";
 
@@ -291,6 +325,10 @@ function applyFilter() {
 }
 
 loadPrefs();
+photoEl.addEventListener("load", () => {
+  photoEl.hidden = !photoEl.hasAttribute("src") || !photoEl.naturalWidth;
+});
+photoEl.addEventListener("error", hidePhoto);
 spinBtn.addEventListener("click", spin);
 filterDishes();
 renderChips();
