@@ -4,148 +4,56 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>香香公主的专属菜单</title>
-<style>
-  :root {
-    --bg: #f7f0e3;
-    --ink: #2b211a;
-    --muted: #75675a;
-    --card: #fffaf0;
-    --line: #e2d5bf;
-    --accent: #c8391f;
-  }
-  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  html { -webkit-text-size-adjust: 100%; }
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--ink);
-    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
-  }
-  main {
-    max-width: 440px;
-    margin: 0 auto;
-    padding: 20px 16px calc(24px + env(safe-area-inset-bottom));
-  }
-  h1 { margin: 0; font-size: 30px; letter-spacing: 2px; text-align: center; }
-  .count { margin: 4px 0 14px; color: var(--muted); font-size: 14px; text-align: center; }
-  .wheel-wrap { position: relative; width: 100%; max-width: 380px; margin: 0 auto; }
-  canvas { display: block; width: 100%; aspect-ratio: 1; }
-  .pointer {
-    position: absolute;
-    top: -6px;
-    left: 50%;
-    width: 30px;
-    height: 36px;
-    transform: translateX(-50%);
-    background: var(--ink);
-    clip-path: polygon(0 0, 100% 0, 50% 100%);
-  }
-  .result {
-    min-height: 92px;
-    margin-top: 14px;
-    padding: 12px 16px;
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    text-align: center;
-  }
-  .result .name { font-size: 28px; font-weight: 700; line-height: 1.3; }
-  .result .sub { margin-top: 2px; color: var(--muted); font-size: 14px; line-height: 1.5; }
-  .result .photo {
-    display: block;
-    width: 100%;
-    max-width: 240px;
-    aspect-ratio: 1;
-    margin: 10px auto 0;
-    border-radius: 10px;
-    object-fit: cover;
-  }
-  .result .photo[hidden] { display: none; }
-  .recipe {
-    margin-top: 12px;
-    padding-top: 10px;
-    border-top: 1px solid var(--line);
-    text-align: left;
-    line-height: 1.55;
-    overflow-wrap: anywhere;
-  }
-  .recipe summary { cursor: pointer; font-weight: 700; }
-  .recipe ol { margin: 8px 0; padding-left: 24px; }
-  .recipe li + li { margin-top: 5px; }
-  .recipe a { color: #245d75; font-size: 14px; }
-  #spin {
-    width: 100%;
-    height: 54px;
-    margin-top: 12px;
-    border: 0;
-    border-radius: 14px;
-    background: var(--accent);
-    color: #fff;
-    font: inherit;
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: 4px;
-  }
-  #spin:disabled { opacity: .55; }
-  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
-  .chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    min-height: 40px;
-    padding: 0 12px;
-    border: 1px solid var(--line);
-    border-radius: 20px;
-    background: var(--card);
-    color: var(--ink);
-    font: inherit;
-    font-size: 15px;
-  }
-  .chip i { width: 10px; height: 10px; border-radius: 50%; background: var(--c); }
-  .chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
-  .chip:disabled { opacity: .55; }
-  .order-entry {
-    display: block;
-    margin-top: 16px;
-    padding: 12px;
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    background: var(--card);
-    color: var(--ink);
-    font-weight: 700;
-    text-align: center;
-    text-decoration: none;
-  }
-  :focus-visible { outline: 3px solid #2b7a99; outline-offset: 2px; }
-</style>
+<link rel="stylesheet" href="./wheel.css">
 </head>
 <body>
-<main>
-  <h1>香香公主的专属菜单</h1>
-  <p class="count" id="count"></p>
-
-  <div class="wheel-wrap">
-    <canvas id="wheel" role="img" aria-label="菜品转盘"></canvas>
-    <div class="pointer" aria-hidden="true"></div>
+<header class="site-header">
+  <div class="shell header-inner">
+    <span class="brand">香香公主的专属菜单</span>
+    <nav class="page-nav" aria-label="菜单功能">
+      <a href="./index.html" aria-current="page">转盘</a>
+      <a href="./order.html">去点菜 <span aria-hidden="true">↗</span></a>
+    </nav>
   </div>
+</header>
 
-  <div class="result">
-    <div aria-live="polite">
-      <div class="name" id="name">转一下</div>
-      <div class="sub" id="sub">转到什么，今天就做什么</div>
+<main class="shell">
+  <section class="hero" aria-labelledby="page-title">
+    <h1 id="page-title">今天吃什么？</h1>
+    <p>选个分类，让转盘决定。</p>
+  </section>
+
+  <section class="filters" aria-labelledby="filter-title">
+    <div class="section-heading">
+      <h2 id="filter-title">菜品分类</h2>
+      <p class="count" id="count" role="status"></p>
     </div>
-    <img class="photo" id="dish-photo" alt="" decoding="async" hidden>
-    <details class="recipe" id="recipe" hidden>
-      <summary>制作步骤</summary>
-      <ol id="recipe-steps"></ol>
-      <a id="recipe-source" target="_blank" rel="noopener noreferrer">查看参考菜谱</a>
-    </details>
+    <div class="chips" id="chips" role="group" aria-label="筛选转盘菜品"></div>
+  </section>
+
+  <div class="wheel-layout">
+    <section class="stage" aria-label="随机转盘">
+      <div class="wheel-wrap">
+        <canvas id="wheel" role="img" aria-label="菜品转盘"></canvas>
+        <div class="pointer" aria-hidden="true"></div>
+      </div>
+      <button id="spin" type="button">开始转</button>
+    </section>
+
+    <section class="result" aria-labelledby="result-title">
+      <h2 id="result-title">抽菜结果</h2>
+      <div class="result-copy" aria-live="polite">
+        <div class="name" id="name">等你转一下</div>
+        <div class="sub" id="sub">抽中的菜、照片和做法会显示在这里。</div>
+      </div>
+      <img class="photo" id="dish-photo" alt="" decoding="async" hidden>
+      <details class="recipe" id="recipe" hidden>
+        <summary>制作步骤</summary>
+        <ol id="recipe-steps"></ol>
+        <a id="recipe-source" target="_blank" rel="noopener noreferrer">查看参考菜谱</a>
+      </details>
+    </section>
   </div>
-
-  <button id="spin" type="button">开始转</button>
-
-  <div class="chips" id="chips"></div>
-  <a class="order-entry" href="./order.html">去点菜 →</a>
 </main>
 
 <script src="./recipe-steps.js"></script>
@@ -192,9 +100,20 @@ function filterDishes() {
 function draw() {
   const size = state.size;
   if (!size) return;
-  const c = size / 2, r = c - 4, n = current.length, step = TAU / n;
+  const c = size / 2, r = c - 11, n = current.length, step = TAU / n;
+  const longest = Math.max(...current.map(d => d.name.length));
   ctx.setTransform(canvas.width / size, 0, 0, canvas.height / size, 0, 0);
   ctx.clearRect(0, 0, size, size);
+
+  const rim = ctx.createLinearGradient(0, 0, size, size);
+  rim.addColorStop(0, "#fff0c9");
+  rim.addColorStop(.38, "#d6a362");
+  rim.addColorStop(.75, "#a86532");
+  rim.addColorStop(1, "#f2cc8e");
+  ctx.beginPath();
+  ctx.arc(c, c, c - 2, 0, TAU);
+  ctx.fillStyle = rim;
+  ctx.fill();
 
   for (let i = 0; i < n; i++) {
     const a = -Math.PI / 2 + state.rot + i * step;
@@ -204,14 +123,13 @@ function draw() {
     ctx.closePath();
     ctx.fillStyle = current[i].color;
     ctx.fill();
-    if (i % 2) { ctx.fillStyle = "rgba(0,0,0,.16)"; ctx.fill(); }
-    ctx.strokeStyle = "rgba(255,250,240,.75)";
-    ctx.lineWidth = 1;
+    if (i % 2) { ctx.fillStyle = "rgba(255,231,191,.09)"; ctx.fill(); }
+    ctx.strokeStyle = "rgba(255,249,231,.68)";
+    ctx.lineWidth = .8;
     ctx.stroke();
 
     const textEnd = r - 10;
     const textMax = textEnd - r * 0.24;
-    const longest = Math.max(...current.map(d => d.name.length));
     let font = Math.min(20, textEnd * step / (1.15 + longest * step));
     ctx.save();
     ctx.translate(c, c);
@@ -231,17 +149,23 @@ function draw() {
 
   ctx.beginPath();
   ctx.arc(c, c, r, 0, TAU);
-  ctx.strokeStyle = "#2b211a";
-  ctx.lineWidth = 4;
+  ctx.strokeStyle = "#fff0cd";
+  ctx.lineWidth = 2;
   ctx.stroke();
 
   ctx.beginPath();
   ctx.arc(c, c, r * 0.17, 0, TAU);
-  ctx.fillStyle = "#fffaf0";
+  ctx.fillStyle = "#7e2e23";
   ctx.fill();
-  ctx.strokeStyle = "#2b211a";
-  ctx.lineWidth = 3;
+  ctx.strokeStyle = "#e9bc7f";
+  ctx.lineWidth = 4;
   ctx.stroke();
+
+  ctx.fillStyle = "#fff3da";
+  ctx.font = "700 " + Math.round(r * .16) + "px 'Songti SC', SimSun, serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText("香", c, c);
 }
 
 function resize() {
@@ -291,8 +215,8 @@ function hideDishDetails() {
 
 function resetResult() {
   hideDishDetails();
-  nameEl.textContent = "转一下";
-  subEl.textContent = "转到什么，今天就做什么";
+  nameEl.textContent = "等你转一下";
+  subEl.textContent = "抽中的菜、照片和做法会显示在这里。";
   spinBtn.textContent = "开始转";
 }
 
@@ -311,8 +235,8 @@ function spin() {
 
   setBusy(true);
   hideDishDetails();
-  nameEl.textContent = "……";
-  subEl.textContent = "看看今天吃什么";
+  nameEl.textContent = "转盘转动中";
+  subEl.textContent = "等指针停下，就知道吃什么。";
 
   function frame(now) {
     const p = Math.min(1, (now - t0) / duration);
@@ -338,8 +262,9 @@ function renderChips() {
     b.append(dot, cat.name);
     b.addEventListener("click", () => {
       state.category = cat.name;
+      chipsEl.querySelector('[aria-pressed="true"]')?.setAttribute("aria-pressed", "false");
+      b.setAttribute("aria-pressed", "true");
       applyFilter();
-      renderChips();
     });
     chipsEl.appendChild(b);
   });
