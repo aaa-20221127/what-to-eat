@@ -134,7 +134,7 @@ function makeRecipe(dish) {
   source.href = RECIPE_SOURCES[slug];
   source.target = "_blank";
   source.rel = "noopener noreferrer";
-  source.textContent = "查看参考菜谱 ↗";
+  source.textContent = source.pathname === "/search/" ? "在下厨房查同款 ↗" : "查看参考菜谱 ↗";
   details.append(summary, steps, source);
   return details;
 }

@@ -56,8 +56,8 @@
   </div>
 </main>
 
-<script src="./recipe-steps.js"></script>
-<script src="./catalog.js"></script>
+<script src="./recipe-steps.js?v=popular"></script>
+<script src="./catalog.js?v=popular"></script>
 <script>
 const TAU = Math.PI * 2;
 const canvas = document.getElementById("wheel");
@@ -80,6 +80,7 @@ function loadPrefs() {
     const saved = JSON.parse(localStorage.getItem("what-to-eat") || "{}");
     const renamed = new Map([
       ["快炒", "炒"], ["蒸", "清蒸"], ["压力炖", "炖煮与红烧"], ["煎和收汁", "煎与收汁"],
+      ["凉拌", "凉拌与腌菜"],
     ]);
     const category = renamed.get(saved.category) || saved.category;
     if (FILTERS.some(filter => filter.name === category)) state.category = category;
@@ -128,6 +129,7 @@ function draw() {
     ctx.lineWidth = .8;
     ctx.stroke();
 
+    if (step * r < 9) continue;
     const textEnd = r - 10;
     const textMax = textEnd - r * 0.24;
     let font = Math.min(20, textEnd * step / (1.15 + longest * step));
@@ -198,6 +200,7 @@ function showResult(dish) {
       return item;
     }));
     sourceEl.href = RECIPE_SOURCES[photo];
+    sourceEl.textContent = sourceEl.pathname === "/search/" ? "在下厨房查同款" : "查看参考菜谱";
     recipeEl.hidden = false;
   }
 }

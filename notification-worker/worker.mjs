@@ -1,5 +1,5 @@
-const MAX_BODY_BYTES = 8192;
-const MAX_ITEMS = 48;
+const MAX_BODY_BYTES = 16384;
+const MAX_ITEMS = 128;
 const MAX_QUANTITY = 99;
 const DISH_NAME = /^\p{Script=Han}{1,24}$/u;
 
